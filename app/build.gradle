@@ -32,6 +32,8 @@ dependencies {
     def room_version = "2.6.1"
     implementation libs.appcompat
     implementation libs.material
+    implementation 'androidx.concurrent:concurrent-futures:1.1.0'
+    implementation 'com.google.guava:guava:31.0.1-android'
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
     compileOnly 'org.projectlombok:lombok:1.18.28'
