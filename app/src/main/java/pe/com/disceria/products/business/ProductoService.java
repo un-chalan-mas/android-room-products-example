@@ -1,7 +1,12 @@
 package pe.com.disceria.products.business;
 
 import android.content.Context;
+import android.view.View;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
+import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 
@@ -30,38 +35,43 @@ public class ProductoService {
   private ProductoDao dao;
 
   /**
+   * Vista principal de la actividad.
+   */
+  private View vistaPrincipal;
+
+  /**
+   * Vista de progreso de la actividad
+   */
+  private View vistaProgreso;
+
+  /**
    * Constructor por defecto.
    *
    * @param context Contexto de la aplicación.
    */
-  public ProductoService(Context context) {
+  public ProductoService(Context context, View vistaPrincipal, View vistaProgreso) {
     this.localDatabase = SqlDatabase.getInstance(context, Constantes.NOMBRE_BASE_DATOS);
     this.dao = this.localDatabase.getProductoDao();
+    this.vistaPrincipal = vistaPrincipal;
+    this.vistaProgreso = vistaProgreso;
   }
 
   /**
-   * Inserta un nuevo producto.
+   * Guarda un producto nuevo o existente.
    *
    * @param producto Datos de producto a insertar.
    * @return El registro con su nuevo identificador.
    */
-  public ListenableFuture<Producto> insertarNuevo(Producto producto) {
+  public ListenableFuture<Producto> guardar(Producto producto) {
     this.localDatabase.runInTransaction(() -> {
-      Long id = this.dao.insertar(producto);
-      producto.setId(id);
+      if (producto.getId() != null) {
+        this.dao.actualizar(producto);
+      } else {
+        Long id = this.dao.insertar(producto);
+        producto.setId(id);
+      }
     });
     return Futures.immediateFuture(producto);
-  }
-
-  /**
-   * Actualiza los datos de un producto.
-   *
-   * @param producto Datos de producto a actualizar.
-   * @return Una instancia {@link Void}
-   */
-  public ListenableFuture<Void> actualizar(Producto producto) {
-    this.localDatabase.runInTransaction(() -> this.dao.actualizar(producto));
-    return Futures.immediateVoidFuture();
   }
 
   /**
@@ -92,6 +102,42 @@ public class ProductoService {
    */
   public ListenableFuture<Producto> obtenerPorId(Long id) {
     return Futures.immediateFuture(this.dao.obtenerPorId(id));
+  }
+
+  public void bloquearActividad() {
+    this.vistaPrincipal.setVisibility(View.GONE);
+    this.vistaProgreso.setVisibility(View.VISIBLE);
+  }
+
+  public void desbloquearActividad() {
+    this.vistaProgreso.setVisibility(View.GONE);
+    this.vistaPrincipal.setVisibility(View.VISIBLE);
+  }
+
+  /**
+   * Construye una instancia {@link FutureCallback} para manejar las respuestas de las operaciones
+   * hacia la base de datos local.
+   *
+   * @param exitoso Método a consumir en caso la operación haya sido exitosa.
+   * @param context Contexto de la aplicación.
+   * @param <T>     Tipo de respuesta de la operación.
+   * @return Una instancia {@link FutureCallback}.
+   */
+  public <T> FutureCallback<T> construirFutureCallback(java.util.function.Consumer<T> exitoso,
+                                                       Context context) {
+    return new FutureCallback<T>() {
+      @Override
+      public void onSuccess(T result) {
+        exitoso.accept(result);
+        ProductoService.this.desbloquearActividad();
+      }
+
+      @Override
+      public void onFailure(@NonNull Throwable t) {
+        ProductoService.this.desbloquearActividad();
+        Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
+      }
+    };
   }
 
 }
