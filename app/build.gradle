@@ -29,10 +29,20 @@ android {
 }
 
 dependencies {
-
+    implementation libs.constraintlayout
+    def room_version = "2.6.1"
     implementation libs.appcompat
     implementation libs.material
+    implementation 'androidx.concurrent:concurrent-futures:1.1.0'
+    implementation 'com.google.guava:guava:31.0.1-android'
+    compileOnly 'org.projectlombok:lombok:1.18.30'
+    annotationProcessor 'org.projectlombok:lombok:1.18.30'
+    // Room debe estar debajo de lombok
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
     testImplementation libs.junit
+    testCompileOnly 'org.projectlombok:lombok:1.18.30'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.30'
     androidTestImplementation libs.androidx.test.ext.junit
     androidTestImplementation libs.espresso.core
 }
