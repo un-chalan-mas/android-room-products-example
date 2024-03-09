@@ -1,3 +1,24 @@
 <resources>
     <string name="app_name">Products</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="lorem_ipsum_simple" translatable="false">Lorem ipsum</string>
+    <string name="precio_defecto" translatable="false">$ 1.00</string>
+    <string name="precio_dolares" translatable="false">$ %1$s</string>
+    <string name="actividad_detalles_titulo">Product details</string>
+    <string name="actividad_detalles_nombre">Name</string>
+    <string name="actividad_detalles_descripcion">Description</string>
+    <string name="actividad_detalles_precio">Price</string>
+    <string name="actividad_detalles_categoria">Category</string>
+    <string name="actividad_detalles_guardar">Save</string>
+    <string name="actividad_detalles_cancelar">Cancel</string>
+    <string name="categoria_electronica">Electronic</string>
+    <string name="categoria_hogar">Home</string>
+    <string name="categoria_vestimenta">Dress</string>
+    <string name="categoria_otros">Other</string>
+    <string name="categoria_detalles_eliminar">Delete</string>
+    <string name="actividad_detalles_guardar_exito">Product was saved successfully!</string>
+    <string name="actividad_detalles_eliminar_exito">Product deleted successfully!</string>
+    <string name="fragmento_guardar">Saving product</string>
+    <string name="fragmento_eliminar">Deleting product</string>
+    <string name="fragmento_todas_alarmas">Retreving all products</string>
 </resources>

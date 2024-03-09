@@ -3,6 +3,7 @@ package pe.com.disceria.products.sql.entity;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 import lombok.AllArgsConstructor;
@@ -24,11 +25,12 @@ import lombok.ToString;
 @EqualsAndHashCode
 @ToString
 @Entity
-public class Producto {
+public class Producto implements Serializable {
 
   /**
    * Identificador único de registro.
    */
+  @EqualsAndHashCode.Include
   @PrimaryKey(autoGenerate = true)
   private Long id;
 
@@ -50,6 +52,6 @@ public class Producto {
   /**
    * Categoría del producto
    */
-  private Categoria categoria;
+  private Integer categoria;
 
 }

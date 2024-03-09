@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Productos</string>
+    <string name="actividad_detalles_titulo">Detalles de producto</string>
+    <string name="actividad_detalles_nombre">Nombre</string>
+    <string name="actividad_detalles_descripcion">Descripción</string>
+    <string name="actividad_detalles_precio">Precio</string>
+    <string name="actividad_detalles_categoria">Categoría</string>
+    <string name="actividad_detalles_guardar">Guardar</string>
+    <string name="actividad_detalles_cancelar">Cancelar</string>
+    <string name="categoria_electronica">Electrónica</string>
+    <string name="categoria_hogar">Hogar</string>
+    <string name="categoria_vestimenta">Vestimenta</string>
+    <string name="categoria_otros">Otros</string>
+    <string name="categoria_detalles_eliminar">Eliminar</string>
+    <string name="actividad_detalles_guardar_exito">¡El producto fue guardado exitosamente!</string>
+    <string name="actividad_detalles_eliminar_exito">¡El producto fue eliminado exitosamente!</string>
+    <string name="fragmento_guardar">Guardando producto</string>
+    <string name="fragmento_eliminar">Eliminando producto</string>
+    <string name="fragmento_todas_alarmas">Obteniendo todos los productos</string>
+</resources>
