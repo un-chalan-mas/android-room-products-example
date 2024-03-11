@@ -27,27 +27,29 @@ public class ProductoService {
   /**
    * Instancia del gestor de base de datos.
    */
-  private SqlDatabase localDatabase;
+  private final SqlDatabase localDatabase;
 
   /**
    * Instancia del gestor de los registros de {@link Producto}.
    */
-  private ProductoDao dao;
+  private final ProductoDao dao;
 
   /**
    * Vista principal de la actividad.
    */
-  private View vistaPrincipal;
+  private final View vistaPrincipal;
 
   /**
    * Vista de progreso de la actividad
    */
-  private View vistaProgreso;
+  private final View vistaProgreso;
 
   /**
    * Constructor por defecto.
    *
-   * @param context Contexto de la aplicación.
+   * @param context        Contexto de la aplicación.
+   * @param vistaPrincipal Contenedor de la vista principal.
+   * @param vistaProgreso  Contenedor de la vista de progreso
    */
   public ProductoService(Context context, View vistaPrincipal, View vistaProgreso) {
     this.localDatabase = SqlDatabase.getInstance(context, Constantes.NOMBRE_BASE_DATOS);
@@ -59,8 +61,8 @@ public class ProductoService {
   /**
    * Guarda un producto nuevo o existente.
    *
-   * @param producto Datos de producto a insertar.
-   * @return El registro con su nuevo identificador.
+   * @param producto Datos de producto a insertar o actualizar.
+   * @return El registro guardado en base de datos.
    */
   public ListenableFuture<Producto> guardar(Producto producto) {
     this.localDatabase.runInTransaction(() -> {
@@ -104,11 +106,17 @@ public class ProductoService {
     return Futures.immediateFuture(this.dao.obtenerPorId(id));
   }
 
+  /**
+   * Oculta los elementos de una actividad.
+   */
   public void bloquearActividad() {
     this.vistaPrincipal.setVisibility(View.GONE);
     this.vistaProgreso.setVisibility(View.VISIBLE);
   }
 
+  /**
+   * Muestra los elementos de una actividad.
+   */
   public void desbloquearActividad() {
     this.vistaProgreso.setVisibility(View.GONE);
     this.vistaPrincipal.setVisibility(View.VISIBLE);
@@ -126,12 +134,21 @@ public class ProductoService {
   public <T> FutureCallback<T> construirFutureCallback(java.util.function.Consumer<T> exitoso,
                                                        Context context) {
     return new FutureCallback<T>() {
+
+      /**
+       * Método a implementar en caso de éxito.
+       * @param result Dato enviado como respuesta.
+       */
       @Override
       public void onSuccess(T result) {
         exitoso.accept(result);
         ProductoService.this.desbloquearActividad();
       }
 
+      /**
+       * Método a implementar en caso de error.
+       * @param t Excepción lanzada.
+       */
       @Override
       public void onFailure(@NonNull Throwable t) {
         ProductoService.this.desbloquearActividad();
