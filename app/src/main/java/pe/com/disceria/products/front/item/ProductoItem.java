@@ -66,7 +66,8 @@ public class ProductoItem extends RecyclerView.Adapter<ProductoItem.VisorProduct
     Producto producto = this.lista.get(position);
     holder.nombre.setText(producto.getNombre());
     holder.categoria.setText(this.contexto.getString(producto.getCategoria()));
-    holder.precio.setText(producto.getPrecio().setScale(2, RoundingMode.HALF_EVEN).toString());
+    holder.precio.setText(this.contexto.getString(R.string.precio_dolares,
+        producto.getPrecio().setScale(2, RoundingMode.HALF_EVEN).toString()));
     holder.itemView.setOnClickListener(v -> {
       Intent intent = new Intent(this.contexto, DetallesProductoActivity.class);
       intent.putExtra(Constantes.INTENT_CLAVE_PRODUCTO, producto);
