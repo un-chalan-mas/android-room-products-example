@@ -1,7 +1,7 @@
 package pe.com.disceria.products.util;
 
 /**
- * Clase que guarda las constantes de la aplicación
+ * Clase que guarda las constantes de la aplicación.
  *
  * @author un-chalan-mas
  */

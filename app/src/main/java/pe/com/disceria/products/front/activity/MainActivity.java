@@ -25,18 +25,32 @@ import pe.com.disceria.products.sql.entity.Producto;
 import pe.com.disceria.products.util.Constantes;
 import pe.com.disceria.products.util.Metodos;
 
+/**
+ * Clase que representa la lógica de la pantalla principal.
+ *
+ * @author un-chalan-mas
+ */
 public class MainActivity extends AppCompatActivity {
 
-  private ProductoService servicio;
-
+  /**
+   * Componente de la lista de productos.
+   */
   private RecyclerView recyclerView;
 
+  /**
+   * Adaptador de la lista de productos.
+   */
   private ProductoItem lista;
 
   /**
    * Abre la actividad {@link DetallesProductoActivity} y espera un resultado.
    */
   private ActivityResultLauncher<Intent> gestorActividadDetalles;
+
+  /**
+   * Instancia para lógica de negocio.
+   */
+  private ProductoService servicio;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -49,16 +63,25 @@ public class MainActivity extends AppCompatActivity {
   @Override
   public void onStart() {
     super.onStart();
+    // Este componente se encuentra dentro de un fragmento y éste se crea después de onCreate()
     TextView textoProgreso = this.findViewById(R.id.fragmento_progreso_texto);
     textoProgreso.setText(this.getString(R.string.fragmento_todas_alarmas));
     listarProductos();
   }
 
+  /**
+   * Método a ejecutar en caso de pulsar el botón "Agregar"
+   *
+   * @param v Instancia del botón "Agregar".
+   */
   public void agregar(View v) {
     this.gestorActividadDetalles.launch(new Intent(this.getApplicationContext(),
         DetallesProductoActivity.class));
   }
 
+  /**
+   * Inicializa las variables declaradas a nivel de clase.
+   */
   private void iniciarVariables() {
     this.recyclerView = this.findViewById(R.id.activity_main_list);
     this.servicio = new ProductoService(this.getApplicationContext(),
@@ -74,6 +97,9 @@ public class MainActivity extends AppCompatActivity {
     this.setSupportActionBar(this.findViewById(R.id.activity_main_toolbar));
   }
 
+  /**
+   * Obtiene los productos desde la base de datos local.
+   */
   private void listarProductos() {
     this.servicio.bloquearActividad();
     Futures.addCallback(this.servicio.listarTodo(),
@@ -81,6 +107,11 @@ public class MainActivity extends AppCompatActivity {
         Metodos.obtenerExecutor(this.getApplicationContext()));
   }
 
+  /**
+   * Ejecuta instrucciones posteriores al listado de productos desde la base de datos.
+   *
+   * @return Una instancia {@link FutureCallback}.
+   */
   private FutureCallback<List<Producto>> organizarListaRegistros() {
     return servicio.construirFutureCallback(lista -> {
       this.lista = new ProductoItem(this.getApplicationContext(), lista,
@@ -90,6 +121,12 @@ public class MainActivity extends AppCompatActivity {
     }, this.getApplicationContext());
   }
 
+  /**
+   * Ejecuta instrucciones posteriores a la devolución de un resultado desde la pantalla de detalles
+   * de producto.
+   *
+   * @param intent Instancia {@link Intent}.
+   */
   private void gestionarProductoGuardado(Intent intent) {
     Producto producto = Metodos.obtenerObjetoDesdeIntent(intent,
         Constantes.INTENT_CLAVE_PRODUCTO, Producto.class);
