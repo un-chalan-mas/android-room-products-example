@@ -15,8 +15,8 @@ import java.math.RoundingMode;
 import java.util.List;
 
 import lombok.RequiredArgsConstructor;
-import pe.com.disceria.products.front.activity.DetallesProductoActivity;
 import pe.com.disceria.products.R;
+import pe.com.disceria.products.front.activity.DetallesProductoActivity;
 import pe.com.disceria.products.sql.entity.Producto;
 import pe.com.disceria.products.util.Constantes;
 
@@ -75,14 +75,31 @@ public class ProductoItem extends RecyclerView.Adapter<ProductoItem.VisorProduct
     });
   }
 
+  /**
+   * Agrega un elemento a la lista de productos.
+   *
+   * @param producto Elemento a agregar.
+   * @return {@code true} si el elemento fue agregado exitosamente.
+   */
   public boolean agregar(Producto producto) {
     return this.lista.add(producto);
   }
 
-  public void actualizar(int indice, Producto producto){
+  /**
+   * Actualiza los datos de un elemento en una posición indicada.
+   *
+   * @param indice   Posición del elemento a actualizar.
+   * @param producto Datos del elemento a actualizar.
+   */
+  public void actualizar(int indice, Producto producto) {
     this.lista.set(indice, producto);
   }
 
+  /**
+   * Elimina un elemento de la lista.
+   *
+   * @param producto Elemento a eliminar.
+   */
   public void eliminar(Producto producto) {
     this.lista.remove(producto);
   }
@@ -109,6 +126,11 @@ public class ProductoItem extends RecyclerView.Adapter<ProductoItem.VisorProduct
      */
     private TextView precio;
 
+    /**
+     * Constructor por defecto.
+     *
+     * @param itemView Vista a nivel de elemento.
+     */
     public VisorProducto(@NonNull View itemView) {
       super(itemView);
       this.nombre = itemView.findViewById(R.id.item_producto_nombre);

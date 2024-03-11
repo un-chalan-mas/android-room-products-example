@@ -1,17 +1,19 @@
 package pe.com.disceria.products.front.fragment;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.fragment.app.Fragment;
+
 import pe.com.disceria.products.R;
 
 /**
- * A simple {@link Fragment} subclass.
+ * Fragmento que contiene los componentes a mostrar cuando se bloquean los componentes de una
+ * actividad.
+ *
+ * @author un-chalan-mas
  */
 public class ProgressFragment extends Fragment {
   @Override
