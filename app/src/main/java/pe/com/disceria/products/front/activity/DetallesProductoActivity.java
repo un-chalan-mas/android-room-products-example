@@ -90,7 +90,7 @@ public class DetallesProductoActivity extends AppCompatActivity {
     iniciarVariables();
     configurarBarra();
     listarCategorias();
-    llenarDatos();
+    obtenerProducto();
   }
 
   @Override
@@ -98,6 +98,7 @@ public class DetallesProductoActivity extends AppCompatActivity {
     super.onStart();
     // Este componente se encuentra dentro de un fragmento y éste se crea después de onCreate()
     this.textoProgreso = this.findViewById(R.id.fragmento_progreso_texto);
+    this.textoProgreso.setText(R.string.fragmento_obtener_producto);
   }
 
   /**
@@ -166,13 +167,9 @@ public class DetallesProductoActivity extends AppCompatActivity {
     this.descripcion = this.findViewById(R.id.actividad_detalles_descripcion);
     this.precio = this.findViewById(R.id.actividad_detalles_precio);
     this.categoria = this.findViewById(R.id.actividad_detalles_categoria);
-    this.producto = Optional.ofNullable(Metodos.obtenerObjetoDesdeIntent(this.getIntent(),
-        Constantes.INTENT_CLAVE_PRODUCTO, Producto.class));
     this.servicio = new ProductoService(this.getApplicationContext(),
         this.findViewById(R.id.actividad_detalles_vista_principal),
         this.findViewById(R.id.actividad_detalles_vista_progreso));
-    this.findViewById(R.id.actividad_detalles_eliminar).setVisibility(
-        this.producto.isPresent() ? View.VISIBLE : View.GONE);
   }
 
   /**
@@ -195,16 +192,34 @@ public class DetallesProductoActivity extends AppCompatActivity {
   }
 
   /**
-   * Coloca los datos del producto enviado en sus componentes correspondientes.
+   * Obtiene los datos del producto desde la base de datos.
    */
-  private void llenarDatos() {
-    this.producto.ifPresent(registro -> {
-      this.nombre.setText(registro.getNombre());
-      this.descripcion.setText(registro.getDescripcion());
-      this.precio.setText(registro.getPrecio().toString());
-      int position = this.listaCategorias.getPosition(this.getString(registro.getCategoria()));
-      this.categoria.setSelection(position);
-    });
+  private void obtenerProducto() {
+    this.servicio.bloquearActividad();
+    Long id = this.getIntent().getLongExtra(Constantes.INTENT_CLAVE_PRODUCTO_ID,
+        Constantes.NUMERO_MENOS_UNO);
+    Futures.addCallback(this.servicio.obtenerPorId(id), this.llenarDatos(),
+        Metodos.obtenerExecutor(this.getApplicationContext()));
+  }
+
+  /**
+   * Coloca los datos del producto enviado en sus componentes correspondientes.
+   *
+   * @return Una instancia {@link FutureCallback}.
+   */
+  private FutureCallback<Producto> llenarDatos() {
+    return this.servicio.construirFutureCallback(producto -> {
+      this.producto = Optional.ofNullable(producto);
+      this.producto.ifPresent(registro -> {
+        this.nombre.setText(registro.getNombre());
+        this.descripcion.setText(registro.getDescripcion());
+        this.precio.setText(registro.getPrecio().toString());
+        int position = this.listaCategorias.getPosition(this.getString(registro.getCategoria()));
+        this.categoria.setSelection(position);
+      });
+      this.findViewById(R.id.actividad_detalles_eliminar).setVisibility(
+          this.producto.isPresent() ? View.VISIBLE : View.GONE);
+    }, this.getApplicationContext());
   }
 
   /**

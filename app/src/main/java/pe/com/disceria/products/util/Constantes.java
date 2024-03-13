@@ -18,9 +18,14 @@ public class Constantes {
   public static final int VERSION_BASE_DATOS = 1;
 
   /**
-   * Clave de producto para guardar en un {@link android.content.Intent}.
+   * Clave de producto.
    */
   public static final String INTENT_CLAVE_PRODUCTO = "intent.clave.producto";
+
+  /**
+   * Clave de identificador de producto.
+   */
+  public static final String INTENT_CLAVE_PRODUCTO_ID = "intent.clave.producto.id";
 
   /**
    * Clave para operación de base de datos.
