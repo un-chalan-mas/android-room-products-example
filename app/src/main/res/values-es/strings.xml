@@ -18,4 +18,6 @@
     <string name="fragmento_guardar">Guardando producto</string>
     <string name="fragmento_eliminar">Eliminando producto</string>
     <string name="fragmento_todas_alarmas">Obteniendo todos los productos</string>
+    <string name="error_base_datos">Hubo un error en la base de datos, por favor inténtalo nuevamente.</string>
+    <string name="fragmento_obtener_producto">Obteniendo producto.</string>
 </resources>
