@@ -21,4 +21,6 @@
     <string name="fragmento_guardar">Saving product</string>
     <string name="fragmento_eliminar">Deleting product</string>
     <string name="fragmento_todas_alarmas">Retreving all products</string>
+    <string name="error_base_datos">There was an error on database, please try again.</string>
+    <string name="fragmento_obtener_producto">Retrieving product</string>
 </resources>

@@ -70,7 +70,7 @@ public class ProductoItem extends RecyclerView.Adapter<ProductoItem.VisorProduct
         producto.getPrecio().setScale(2, RoundingMode.HALF_EVEN).toString()));
     holder.itemView.setOnClickListener(v -> {
       Intent intent = new Intent(this.contexto, DetallesProductoActivity.class);
-      intent.putExtra(Constantes.INTENT_CLAVE_PRODUCTO, producto);
+      intent.putExtra(Constantes.INTENT_CLAVE_PRODUCTO_ID, producto.getId());
       intent.putExtra(Constantes.INTENT_CLAVE_INDICE_PRODUCTO, position);
       this.gestorActividadDetalles.launch(intent);
     });

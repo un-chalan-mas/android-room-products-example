@@ -12,6 +12,7 @@ import com.google.common.util.concurrent.ListenableFuture;
 
 import java.util.List;
 
+import pe.com.disceria.products.R;
 import pe.com.disceria.products.sql.SqlDatabase;
 import pe.com.disceria.products.sql.dao.ProductoDao;
 import pe.com.disceria.products.sql.entity.Producto;
@@ -152,7 +153,9 @@ public class ProductoService {
       @Override
       public void onFailure(@NonNull Throwable t) {
         ProductoService.this.desbloquearActividad();
-        Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
+        android.util.Log.e(this.getClass().getName(), t.getMessage(), t);
+        Toast.makeText(context, context.getString(R.string.error_base_datos), Toast.LENGTH_SHORT)
+            .show();
       }
     };
   }
