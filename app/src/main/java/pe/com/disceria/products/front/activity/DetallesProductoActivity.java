@@ -124,17 +124,22 @@ public class DetallesProductoActivity extends AppCompatActivity {
    * @param v Instancia del botón "Guardar".
    */
   public void guardar(View v) {
-    this.textoProgreso.setText(this.getString(R.string.fragmento_guardar));
-    this.servicio.bloquearActividad();
-    Producto nuevosDatos = this.producto.orElseGet(() -> Producto.builder().build());
-    nuevosDatos.setNombre(this.nombre.getText().toString());
-    nuevosDatos.setDescripcion(this.descripcion.getText().toString());
-    nuevosDatos.setPrecio(new BigDecimal(this.precio.getText().toString()));
-    int index = this.categoria.getSelectedItemPosition();
-    nuevosDatos.setCategoria(IDENTIFICADORES_CATEGORIAS[index]);
-    Futures.addCallback(this.servicio.guardar(nuevosDatos),
-        this.gestionarProductoGuardado(),
-        Metodos.obtenerExecutor(this.getApplicationContext()));
+    boolean valido = this.esCampoValido(this.nombre)
+        & this.esCampoValido(this.descripcion)
+        & this.esCampoValido(this.precio);
+    if (valido) {
+      this.textoProgreso.setText(this.getString(R.string.fragmento_guardar));
+      this.servicio.bloquearActividad();
+      Producto nuevosDatos = this.producto.orElseGet(() -> Producto.builder().build());
+      nuevosDatos.setNombre(this.nombre.getText().toString());
+      nuevosDatos.setDescripcion(this.descripcion.getText().toString());
+      nuevosDatos.setPrecio(new BigDecimal(this.precio.getText().toString()));
+      int index = this.categoria.getSelectedItemPosition();
+      nuevosDatos.setCategoria(IDENTIFICADORES_CATEGORIAS[index]);
+      Futures.addCallback(this.servicio.guardar(nuevosDatos),
+          this.gestionarProductoGuardado(),
+          Metodos.obtenerExecutor(this.getApplicationContext()));
+    }
   }
 
   /**
@@ -195,11 +200,29 @@ public class DetallesProductoActivity extends AppCompatActivity {
    * Obtiene los datos del producto desde la base de datos.
    */
   private void obtenerProducto() {
-    this.servicio.bloquearActividad();
     Long id = this.getIntent().getLongExtra(Constantes.INTENT_CLAVE_PRODUCTO_ID,
         Constantes.NUMERO_MENOS_UNO);
-    Futures.addCallback(this.servicio.obtenerPorId(id), this.llenarDatos(),
-        Metodos.obtenerExecutor(this.getApplicationContext()));
+    if (id.intValue() != Constantes.NUMERO_MENOS_UNO) {
+      this.servicio.bloquearActividad();
+      Futures.addCallback(this.servicio.obtenerPorId(id), this.llenarDatos(),
+          Metodos.obtenerExecutor(this.getApplicationContext()));
+    }
+  }
+
+  /**
+   * Valida si se ha ingresado un valor en un campo especificado.
+   *
+   * @param editText Campo {@link EditText} a validar.
+   * @return {@code false} si el campo está vacío.
+   */
+  private boolean esCampoValido(EditText editText) {
+    boolean valido;
+    String texto = editText.getText().toString();
+    valido = !texto.isEmpty();
+    if (!valido) {
+      editText.setError(this.getString(R.string.actividad_detalles_campo_vacio));
+    }
+    return valido;
   }
 
   /**
