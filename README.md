@@ -22,3 +22,9 @@
 | Secondary Color | ![#3700B3](https://via.placeholder.com/10/3700B3?text=+) #3700B3 |
 | Accent Color | ![#03DAC5](https://via.placeholder.com/10/03DAC5?text=+) #03DAC5 |
 | Text Color | ![#000000](https://via.placeholder.com/10/000000?text=+) #000000 |
+
+## Gracias 🙌🏻
+Si les fue de utilidad, agradecería me puedan apoyar con una contribución:
+
+### Yape
+<img src="https://github.com/un-chalan-mas/un-chalan-mas/blob/main/media/image/qr_yape.JPG" width=400 height=608/>
