@@ -26,7 +26,7 @@
 ## Gracias 🙌🏻
 Si les fue de utilidad, agradecería me puedan apoyar con una contribución:
 
-### Yape
+### Yape (Perú)
 <img src="https://github.com/un-chalan-mas/un-chalan-mas/blob/main/media/image/qr_yape.JPG" width=400 height=608/>
 
 ### PayPal
